@@ -1,0 +1,43 @@
+{
+  "feature_columns": [
+    "education",
+    "hours-per-week",
+    "workclass",
+    "occupation",
+    "sex",
+    "race",
+    "age",
+    "native-country"
+  ],
+  "merit_columns": [
+    "education",
+    "hours-per-week",
+    "workclass",
+    "occupation"
+  ],
+  "protected_columns": [
+    "sex",
+    "race",
+    "age",
+    "native-country"
+  ],
+  "categorical_columns": [
+    "education",
+    "workclass",
+    "occupation",
+    "sex",
+    "race",
+    "native-country"
+  ],
+  "numeric_columns": [
+    "hours-per-week",
+    "age"
+  ],
+  "train_size": 36177,
+  "test_accuracy": 0.8092868988391376,
+  "test_auc": 0.8473243031915264,
+  "class_distribution": {
+    "0": 34014,
+    "1": 11208
+  }
+}
