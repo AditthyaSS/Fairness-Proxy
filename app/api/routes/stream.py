@@ -34,11 +34,13 @@ async def pipeline_websocket(websocket: WebSocket):
             await emit("classifying", {"status": "running"})
             from app.services.schema_classifier import get_schema_classifier
 
-            # Extract true_label from frontend before building ProxyRequest
+            # Extract non-model fields before building ProxyRequest
             true_label = request_data.pop("true_label", None)
-            # Remove non-model fields but save mock_upstream for later use
             mock_upstream = request_data.pop("mock_upstream", False)
-            req = ProxyRequest(**request_data, true_label=true_label)
+            # Build ProxyRequest, ignoring any unknown extra keys from the frontend
+            proxy_fields = ProxyRequest.model_fields.keys()
+            filtered_data = {k: v for k, v in request_data.items() if k in proxy_fields}
+            req = ProxyRequest(**filtered_data, true_label=true_label)
             classifier = get_schema_classifier()
             schema = await classifier.classify(req.payload, domain_hint=req.domain)
             await emit("classified", {
@@ -62,10 +64,10 @@ async def pipeline_websocket(websocket: WebSocket):
             })
 
             # Stage 3: upstream (stream each inference as it completes)
-            await emit("upstream_running", {"status": "running", "total": 6})
             from app.services.upstream_client import get_upstream_client
             upstream = get_upstream_client(mock=mock_upstream)
             all_payloads = [twin_result.original] + [t.payload for t in twin_result.twins]
+            await emit("upstream_running", {"status": "running", "total": len(all_payloads)})
 
             for i, payload in enumerate(all_payloads):
                 inf = await upstream.infer(req.target_endpoint, payload)

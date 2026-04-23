@@ -141,7 +141,7 @@ export function usePipelineRun() {
     } catch {
       // WebSocket failed — fall back to HTTP POST
       if (!wsConnected) {
-        await runHTTPFallback(payload, scenario, sc);
+        await runHTTPFallback(payload, scenario, sc, trueLabel);
       }
     }
   }, []);
@@ -150,7 +150,8 @@ export function usePipelineRun() {
   const runHTTPFallback = useCallback(async (
     payload: Record<string, any>,
     scenario: string,
-    sc: any
+    sc: any,
+    trueLabel: number | null = null
   ) => {
     const store = usePipelineStore.getState();
 
@@ -173,6 +174,7 @@ export function usePipelineRun() {
             target_endpoint: sc?.targetEndpoint ?? '/v1/decisions/infer',
             domain: scenario,
             payload,
+            true_label: trueLabel,
           }),
         }
       );
@@ -191,6 +193,8 @@ export function usePipelineRun() {
         s.completeStage(i);
       }
       s.setResult(data);
+      s.setAccuracyGain(data.accuracy_gain ?? null);
+      s.setCumulativeImprovement(data.cumulative_accuracy_improvement ?? null);
       s.setRunState('complete');
       setTimeout(() => usePipelineStore.getState().setDrawerOpen(true), 600);
 

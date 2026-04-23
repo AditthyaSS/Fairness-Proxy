@@ -55,7 +55,6 @@ async def get_rl_stats(db: AsyncSession = Depends(get_db)):
             RLEpisode.original_error,
             RLEpisode.corrected_error,
             RLEpisode.accuracy_gain,
-            RLEpisode.cumulative_accuracy,
         )
         .where(RLEpisode.original_error.isnot(None))
         .order_by(RLEpisode.id.asc())
