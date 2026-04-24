@@ -135,6 +135,7 @@ The dashboard visualizes this as a **dual-line accuracy chart** showing the Orig
 - Python 3.10+
 - Node.js 18+
 - pip
+- ngrok
 
 ### 1. Clone & install
 
