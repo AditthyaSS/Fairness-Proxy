@@ -90,7 +90,7 @@ A PPO agent observes a **7-dimensional state vector** and chooses:
 |--------|--------|
 | **PASS**  | Score unchanged — no bias detected |
 | **MITIGATE**  | Score adjusted to mean of twin scores |
-| **BLOCK** ❌ | Score clamped to 0.5 (neutral) — severe bias |
+| **BLOCK**  | Score clamped to 0.5 (neutral) — severe bias |
 
 **Reward function:**
 ```
