@@ -1,5 +1,5 @@
 <p align="center">
-  <h1 align="center">⚖️ Fairness Proxy</h1>
+  <h1 align="center"> Fairness Proxy</h1>
   <p align="center">
     <strong>AI Bias Interception Middleware — Real-Time Fairness Enforcement for Any ML API</strong>
   </p>
